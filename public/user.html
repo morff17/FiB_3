@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+  <title>User page</title>
+</head>
+<body style="font-family: 'Times New Roman'; font-size: 20px; background-color: #fbefff">
+<div class="flex flex-col m-auto" style="width: 80%;">
+  <h1 class="text-5xl mb-2 mt-3" style="color: #9946b5">Каталог товаров</h1>
+  <div id="result"></div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+  $.ajax({
+    url: '/products',
+    method: 'get',
+    success: (data) => {
+      console.log(data);
+      let productsRowsHTML = '';
+      for (const category in data) {
+        productsRowsHTML += `<h2 class="text-3xl">${category}</h2>`;
+        productsRowsHTML += '<div class="flex gap-5 mb-3 mt-3">';
+        for (const product of data[category]) {
+          productsRowsHTML += '<div class="flex flex-col border border-3 rounded p-2" style="width: 60%; background-color: lavender">'
+          productsRowsHTML += `<p><strong>Название:</strong> ${product.name}</p>`;
+          productsRowsHTML += `<p><strong>Цена:</strong> ${product.price} руб.</p>`;
+          productsRowsHTML += `<p><strong>Описание:</strong> ${product.description}</p>`;
+          productsRowsHTML += '</div>'
+        }
+        productsRowsHTML += '</div>'
+      }
+
+      $('#result').wrapInner(productsRowsHTML);
+    }
+  });
+
+</script>
+</body>
+</html>
